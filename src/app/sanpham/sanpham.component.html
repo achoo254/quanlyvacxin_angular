@@ -1,0 +1,26 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Trang chính</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Thông tin sản phẩm vắc xin</li>
+  </ol>
+</nav>
+<div class="title">
+  <h1 class="tieude">
+    Thông tin sản phẩm vắc xin
+  </h1>
+</div>
+<div class="row">
+  <div class="col-3" *ngFor="let product of listProduct">
+    <div class="card" style="margin-bottom: 10px;">
+      <a class="card-text text-decoration-none" href="/product/{{product.productId}}">
+        <div class="card-image">
+          <img class="card-img-top" src="{{product.images}}" alt="{{product.name}}">
+          <div class="image-overlay"></div>
+        </div>
+        <div class="card-body">
+          {{product.name}}
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

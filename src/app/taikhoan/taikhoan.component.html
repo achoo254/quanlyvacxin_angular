@@ -1,0 +1,51 @@
+<div class="card o-hidden border-0 shadow-lg my-5">
+  <div class="card-body p-0">
+    <div class="p-5">
+      <div class="text-center">
+        <h1 class="h4 text-gray-900 mb-4">Thông tin tài khoản</h1>
+      </div>
+      <form class="user" #myForm="ngForm" (ngSubmit)="myForm.form.valid && PutInfoUser()" novalidate>
+        <div class="form-group">
+          <input type="text" class="form-control form-control-user" name="fullName" #fullName="ngModel"
+            [(ngModel)]="user.fullName" placeholder="Họ tên" minlength="5" maxlength="30" required>
+          <div class="alert alert-danger" *ngIf="fullName.invalid && myForm.submitted">
+            Vui lòng không để trống và hơn 5 ký tự
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="text" placeholder="Ví dụ: 09312345678" class="form-control form-control-user" name="telephone"
+            #telephone="ngModel" placeholder="Số điện thoại" minlength="5" maxlength="15" [(ngModel)]="user.telephone"
+            required pattern="\d*" readonly>
+        </div>
+        <div class="form-group">
+          <input type="email" class="form-control form-control-user" name="email" placeholder="Địa chỉ email"
+            #email="ngModel" [(ngModel)]="user.email" required readonly>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control form-control-user" name="age" placeholder="Tuổi" #age="ngModel"
+            [(ngModel)]="user.age" pattern="\d*" maxlength="2">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control form-control-user" name="address" placeholder="Địa chỉ"
+            #address="ngModel" [(ngModel)]="user.address" maxlength="50">
+          <div class="alert alert-danger" *ngIf="address.invalid && myForm.submitted">
+            Vui lòng không nhập hơn 50 ký tự
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="date" class="form-control form-control-user" name="birthday" #birthday="ngModel"
+            [(ngModel)]="user.birthday">
+        </div>
+        <button type="submit" class="btn btn-primary btn-user btn-block" id="putUserInfo">Thay
+          đổi</button>
+        <div class="alert alert-success" *ngIf="myForm.valid && myForm.submitted">
+          Thông tin tài khoản đã được thay đổi thành công
+        </div>
+      </form>
+      <hr>
+      <div class="text-center">
+        <a class="nav-link small" href="/doimatkhau/{{user.userInfoId}}">Đổi mật khẩu</a>
+      </div>
+    </div>
+  </div>
+</div>

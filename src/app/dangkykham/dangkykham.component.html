@@ -1,0 +1,51 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Trang chính</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Đăng ký khám</li>
+  </ol>
+</nav>
+<div class="title">
+  <h1 class="tieude">
+    Đăng ký thông tin tiêm chủng
+  </h1>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="gt-info" style="text-align: center;">
+      <img class="card-img-top" src="{{baseUrl}}/assets/img/dangkykham.jpg" alt="đăng ký khám">
+    </div>
+  </div>
+</div>
+<div class="row">
+  <p></p>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="gt-info">
+      <form class="user" #myForm="ngForm" (ngSubmit)="myForm.form.valid && DangKyKham()" novalidate>
+        <div class="form-group row">
+          <div class="col-sm-6">
+            <input type="text" class="form-control form-control-user" #name="ngModel" name="inputContactName"
+              placeholder="Tên người liên hệ" [(ngModel)]="customer.contactName" minlength="5" maxlength="30" required>
+            <div class="alert alert-danger " *ngIf="name.invalid && myForm.submitted">
+              Tên người liên hệ không hợp lệ, vui lòng nhập lại
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <input type="text" class="form-control form-control-user" #phone="ngModel" name="inputContactPhone"
+              placeholder="Số điện thoại liên hệ" [(ngModel)]="customer.contactPhone" minlength="5" maxlength="30"
+              required>
+            <div class="alert alert-danger" *ngIf="phone.invalid && myForm.submitted">
+              Số điện thoại liên hệ không hợp lệ, vui lòng nhập lại
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col">
+            <button type="submit" class="btn btn-primary btn-user btn-block" [disabled]="isValid">{{btnStatus}}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

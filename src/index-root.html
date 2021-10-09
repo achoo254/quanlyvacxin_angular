@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tiêm chủng vắc xin</title>
+</head>
+
+<body>
+  <button id="ajaxButton" type="button">Make a request</button>
+  <script>
+function logResult(result) {
+  console.log(result);
+}
+
+function logError(error) {
+  console.log('Looks like there was a problem: \n', error);
+}
+
+function validateResponse(response) {
+  if (!response.ok) {
+    throw Error(response.statusText);
+  }
+  return response;
+}
+
+function readResponseAsJSON(response) {
+  return response.json();
+}
+
+function fetchJSON(pathToResource) {
+  fetch(pathToResource) // 1
+  .then(validateResponse) // 2
+  .then(readResponseAsJSON) // 3
+  .then(logResult) // 4
+  .catch(logError);
+}
+
+fetchJSON('http://localhost:8080/api/regimen/');
+  </script>
+</body>
+
+</html>

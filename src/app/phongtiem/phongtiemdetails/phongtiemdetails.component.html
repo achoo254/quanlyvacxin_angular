@@ -1,0 +1,153 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Trang chính</a></li>
+    <li class="breadcrumb-item"><a href="/phongtiem">Phòng tiêm</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{room.name}} {{room.code}}</li>
+  </ol>
+</nav>
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800">{{room.name}} {{room.code}}</h1>
+<p class="mb-4">Khách hàng là thượng đế</p>
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <div class="row">
+      <div class="col-6">
+      </div>
+      <div class="col-6 text-right">
+        <!-- Default checked -->
+        <ui-switch (change)="OnOff_Room()" [(ngModel)]="room.status"></ui-switch>
+        <!--END-->
+      </div>
+    </div>
+  </div>
+  <div class="card-body table-hover">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTablePhongTiem" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Họ tên khách hàng</th>
+            <th>Tuổi</th>
+            <th>Người liên hệ</th>
+            <th>Số điện thoại liên hệ</th>
+            <th>Nghiệp vụ</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>STT</th>
+            <th>Họ tên khách hàng</th>
+            <th>Tuổi</th>
+            <th>Người liên hệ</th>
+            <th>Số điện thoại liên hệ</th>
+            <th>Nghiệp vụ</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          <tr *ngFor="let item of listCustomerRoom">
+            <td>{{item.orderBy}}</td>
+            <td>{{item.customerRoomCustomer.customerUserInfo.fullName}}</td>
+            <td>{{item.customerRoomCustomer.customerUserInfo.age}}</td>
+            <td>{{item.customerRoomCustomer.contactName}}</td>
+            <td>{{item.customerRoomCustomer.contactPhone}}</td>
+            <td>
+              <a class="btn btn-secondary btn-icon-split btn-sm" id="a-next{{item.customerRoomId}}"
+                (click)="Welcome_Customer(item)">
+                <span class="icon text-white-50">
+                  <i class="fas fa-chalkboard-teacher" id="i-next{{item.customerRoomId}}"></i>
+                </span>
+                <span class="text" id="span-next{{item.customerRoomId}}">{{item.status}}</span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Modal THONG TIN KHACH HANG -->
+      <ng-container *ngIf="userInfoCustomerRoom != null">
+        <div class="modal fade thongtinkhachhang-modal-lg" tabindex="-1" role="dialog"
+          aria-labelledby="thongtinkhachhangLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="thongtinkhachhangLabel">Thông tin</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="text-center">
+                  <h1 class="h4 text-gray-900 mb-4">Khách hàng</h1>
+                </div>
+                <div class="form-group">
+                  <label for="fullName">Họ và tên</label>
+                  <input type="text" class="form-control" name="fullName"
+                    placeholder="{{userInfoCustomerRoom.customerRoomCustomer.customerUserInfo.fullName}}">
+                </div>
+                <div class="form-group">
+                  <label for="contactName">Người liên hệ</label>
+                  <input type="text" class="form-control" name="contactName"
+                    placeholder="{{userInfoCustomerRoom.customerRoomCustomer.contactName}}">
+                </div>
+                <div class="form-group">
+                  <label for="contactPhone">Số điện thoại liên hệ</label>
+                  <input type="text" class="form-control" name="contactPhone"
+                    placeholder="{{userInfoCustomerRoom.customerRoomCustomer.contactPhone}}">
+                </div>
+                <div class="form-group">
+                  <label for="PhongTiem">Tiêm</label>
+                  <table class="table table-bordered" name="PhongTiem" id="dataTablePhongTiemDetails" width="100%"
+                    cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>STT</th>
+                        <th>Vắc xin</th>
+                        <th>Số lô</th>
+                        <th>Hạn dùng</th>
+                        <th>Tiêm</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <th>STT</th>
+                      <th>Vắc xin</th>
+                      <th>Số lô</th>
+                      <th>Hạn dùng</th>
+                      <th>Tiêm</th>
+                    </tfoot>
+                    <tbody>
+                      <tr *ngFor="let item of listRegimenDetails; index as stt">
+                        <td>{{stt + 1}}</td>
+                        <td>{{item.regimenDetailsProductDetails.productDetailsProduct.name}}</td>
+                        <td>{{item.regimenDetailsProductDetails.lote}}</td>
+                        <td>{{item.regimenDetailsProductDetails.date}}</td>
+                        <td>
+                          <a class="btn btn-secondary btn-icon-split btn-sm" id="a-datiem{{item.regimenDetailsId}}"
+                            (click)="DaTiem(item.regimenDetailsId)">
+                            <span class="icon text-white-50">
+                              <i class="fas fa-syringe" id="i-datiem{{item.regimenDetailsId}}"></i>
+                            </span>
+                            <span class="text" id="span-datiem{{item.regimenDetailsId}}">Chưa tiêm</span>
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger leaveCustomer" data-dismiss="modal"
+                  (click)="Leave_Customer()">Hủy tiếp
+                  đón</button>
+                <button type="button" class="btn btn-secondary closeInfoCustomer" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-info closeLichSuTiem" data-dismiss="modal"
+                  (click)="LichSuTiem(userInfoCustomerRoom.customerRoomCustomer.customerId)">Lịch sử tiêm</button>
+                <a class="btn btn-primary chuyentiep" (click)="Next_Finish()">Kết thức</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--END-->
+      </ng-container>
+    </div>
+  </div>
+</div>

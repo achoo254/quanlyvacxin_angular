@@ -1,0 +1,25 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Trang chính</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{regimen.name}}</li>
+  </ol>
+</nav>
+<div class="title">
+  <h1 class="tieude">
+    {{regimen.name}}
+  </h1>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="gt-info" style="text-align: center;">
+      <img class="card-img-top" src="{{baseUrl}}/assets/img/phacdo.jpg" alt="{{regimen.name}}">
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="gt-info">
+      <div [innerHTML]="regimen.details"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,229 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Trang chính</a></li>
+    <li class="breadcrumb-item"><a href="/tieptan">Tiếp tân</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{room.name}} {{room.code}}</li>
+  </ol>
+</nav>
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800">{{room.name}} {{room.code}}</h1>
+<p class="mb-4">Khách hàng là thượng đế</p>
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <div class="row">
+      <div class="col-6">
+        <!-- Add new customer -->
+        <a class="btn btn-info btn-icon-split" (click)="ShowRegisterForm(template3)">
+          <span class="icon text-white-50">
+            <i class="fas fa-info-circle"></i>
+          </span>
+          <span class="text">Đăng ký khám cho khách hàng</span>
+        </a>
+        <!--END-->
+      </div>
+      <div class="col-6 text-right">
+        <!-- Default checked -->
+        <ui-switch (change)="OnOff_Room()" [(ngModel)]="room.status"></ui-switch>
+        <!--END-->
+      </div>
+    </div>
+    <!-- Modal REGISTER CUSTOMER -->
+    <ng-template #template3>
+      <form class="user" #registerForm="ngForm" (ngSubmit)="registerForm.form.valid && RegisterCustomer()" novalidate>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="dangkythongtinLabel">Thông tin</h5>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef3.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="p-5">
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Đăng ký thông tin khách hàng</h1>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control form-control-user" name="fullName" #fullName="ngModel"
+                  [(ngModel)]="registerUser.fullName" placeholder="Họ tên khách hàng" minlength="5" maxlength="30"
+                  required>
+                <div class="alert alert-danger" *ngIf="fullName.invalid && registerForm.submitted">
+                  Vui lòng không để trống và hơn 5 ký tự
+                </div>
+              </div>
+              <div class="form-group">
+                <input type="date" class="form-control form-control-user" name="birthday" #birthday="ngModel"
+                  [(ngModel)]="registerUser.birthday" required>
+                <div class="alert alert-danger" *ngIf="birthday.invalid && registerForm.submitted">
+                  Thông tin không hợp lệ, vui lòng kiểm tra lại
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                  <input type="text" class="form-control form-control-user" [(ngModel)]="registerCustomer.contactName"
+                    name="contactName" #contactName="ngModel" placeholder="Tên người liên hệ" required maxlength="30">
+                </div>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control form-control-user" [(ngModel)]="registerCustomer.contactPhone"
+                    name="contactPhone" #contactPhone="ngModel" placeholder="Số điện thoại liên hệ" required
+                    maxlength="15" pattern="\d*">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="alert alert-danger" *ngIf="contactPhone.invalid && registerForm.submitted">
+                  Thông tin không hợp lệ, vui lòng kiểm tra lại
+                </div>
+              </div>
+              <!--THÔNG TIN ĐĂNG NHẬP CỦA KHÁCH HÀNG-->
+              <ng-container *ngIf="thongtinkhachhang">
+                <div class="form-group">
+                  <label for="thongtindangnhap">Thông tin đăng nhập của khách hàng</label>
+                  <input type="text" class="form-control form-control-user" name="thongtindangnhap"
+                    [value]="thongtindangnhap" readonly>
+                  <p class="alert-danger font-italic text-sm-center">Mật khẩu: 123</p>
+                </div>
+              </ng-container>
+              <!--END-->
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal(3)">Đóng</button>
+            <button type="submit" class="btn btn-primary">Lưu thông tin</button>
+          </div>
+        </div>
+      </form>
+    </ng-template>
+    <!--End add new customer-->
+    <!--<h6 class="m-0 font-weight-bold text-primary">Danh sách khách hàng đã đăng ký thông tin</h6>-->
+  </div>
+  <div class="card-body table-hover">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="datatableTiepTan" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Họ tên khách hàng</th>
+            <th>Tuổi</th>
+            <th>Người liên hệ</th>
+            <th>Số điện thoại liên hệ</th>
+            <th>Nghiệp vụ</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>STT</th>
+            <th>Họ tên khách hàng</th>
+            <th>Tuổi</th>
+            <th>Người liên hệ</th>
+            <th>Số điện thoại liên hệ</th>
+            <th>Nghiệp vụ</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          <tr *ngFor="let item of listCustomerRoom">
+            <td>{{item.orderBy}}</td>
+            <td>{{item.customerRoomCustomer.customerUserInfo.fullName}}</td>
+            <td>{{item.customerRoomCustomer.customerUserInfo.age}}</td>
+            <td>{{item.customerRoomCustomer.contactName}}</td>
+            <td>{{item.customerRoomCustomer.contactPhone}}</td>
+            <td>
+              <a class="btn btn-secondary btn-icon-split btn-sm" id="a-next{{item.customerRoomId}}"
+                (click)="Welcome_Customer(item, template)">
+                <span class="icon text-white-50">
+                  <i class="fas fa-chalkboard-teacher" id="i-next{{item.customerRoomId}}"></i>
+                </span>
+                <span class="text" id="span-next{{item.customerRoomId}}">{{item.status}}</span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Modal THONG TIN KHACH HANG -->
+      <ng-template #template>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="thongtinkhachhangLabel">Thông tin</h5>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="text-center">
+              <h1 class="h4 text-gray-900 mb-4">Khách hàng</h1>
+            </div>
+            <div class="form-group">
+              <label for="fullName">Họ và tên</label>
+              <input type="text" class="form-control"
+                placeholder="{{userInfoCustomerRoom.customerRoomCustomer.customerUserInfo.fullName}}">
+            </div>
+            <div class="form-group">
+              <label for="fullName">Địa chỉ</label>
+              <input type="text" class="form-control"
+                placeholder="{{userInfoCustomerRoom.customerRoomCustomer.customerUserInfo.address}}">
+            </div>
+            <div class="form-group">
+              <label for="fullName">Tuổi</label>
+              <input type="text" class="form-control"
+                placeholder="{{userInfoCustomerRoom.customerRoomCustomer.customerUserInfo.age}}">
+            </div>
+            <div class="form-group">
+              <label for="fullName">Năm sinh</label>
+              <input type="text" class="form-control"
+                placeholder="{{userInfoCustomerRoom.customerRoomCustomer.customerUserInfo.birthday | date: 'dd-MM-yyyy'}}">
+            </div>
+            <div class="form-group">
+              <label for="fullName">Email</label>
+              <input type="text" class="form-control"
+                placeholder="{{userInfoCustomerRoom.customerRoomCustomer.customerUserInfo.email}}">
+            </div>
+            <div class="form-group">
+              <label for="fullName">Số điện thoại</label>
+              <input type="text" class="form-control"
+                placeholder="{{userInfoCustomerRoom.customerRoomCustomer.customerUserInfo.telephone}}">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger leaveCustomer" (click)="Leave_Customer()">Hủy tiếp
+              đón</button>
+            <button type="button" class="btn btn-secondary closeInfoCustomer" (click)="closeModal(1)">Đóng</button>
+            <a class="btn btn-primary chuyentiep" (click)="Open_NextRoom(templateNested)">Chuyển
+              tiếp</a>
+          </div>
+        </div>
+      </ng-template>
+      <!--END-->
+      <!-- Modal MOVE PHONG KHAM -->
+      <ng-template #templateNested>
+        <form #nextRoom="ngForm" (ngSubmit)="Next_Finish()" novalidate>
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="chuyenphongLabel">Thông tin</h5>
+              <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef2.hide()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="card mb-4 py-3 border-bottom-primary" *ngFor="let room of listNextRoom; index as i">
+                <div class="card-body">
+                  <div class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input" [(ngModel)]="nextRoomSeleted" name="chonphong"
+                        [value]="room.roomId">{{room.name}}
+                      {{room.code}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary closeChuyenPhong" (click)="closeModal(2)">Đóng</button>
+              <button type="submit" class="btn btn-primary">In
+                phiếu</button>
+            </div>
+          </div>
+        </form>
+      </ng-template>
+      <!--END-->
+    </div>
+  </div>
+</div>

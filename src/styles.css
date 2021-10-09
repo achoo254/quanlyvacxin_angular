@@ -1,0 +1,30 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.bubble.css';
+@import '~quill/dist/quill.snow.css';
+.tieude{
+  border-bottom:3px solid #2a388f;color:#2a388f;margin:0 0 -2px 0; font-weight:bold;font-family:Arial, Helvetica, sans-serif,'MyriadPro-Bold';text-transform:uppercase;padding-bottom:2px;display:inline-block;font-size:23px;
+}
+div.title{
+  border-bottom:1px solid #ccc;margin-bottom:20px;
+}
+.card-image {
+  position: relative;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background: rgba(78, 115, 223, 0.5);
+  }
+
+.card:hover .image-overlay {
+    opacity: 1;
+  }

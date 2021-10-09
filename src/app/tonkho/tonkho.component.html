@@ -1,0 +1,253 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Trang chính</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Tồn kho</li>
+  </ol>
+</nav>
+<div class="title">
+  <h1 class="tieude">
+    Tồn kho
+  </h1>
+</div>
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <!-- BACK -->
+    <!--END-->
+  </div>
+  <div class="card-body table-hover">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTableTonKho" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Danh mục</th>
+            <th>Tên vắc xin</th>
+            <th>Lô</th>
+            <th>Hạn dùng</th>
+            <th>Số lượng</th>
+            <th colspan="2">Nghiệp vụ</th>
+          </tr>
+          <tr>
+            <th colspan="5"></th>
+            <th>Cập nhật</th>
+            <th>Xóa</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th colspan="5"></th>
+            <th colspan="2">
+              <a class="btn btn-primary themmoi" (click)="initAddEditProduct(productDetailsId)">Thêm sản phẩm mới</a>
+            </th>
+          </tr>
+        </tfoot>
+        <tbody>
+          <tr *ngFor="let item of listProductDetails; index as i">
+            <td>{{item.productDetailsCategories.name}}</td>
+            <td>{{item.productDetailsProduct.name}}</td>
+            <td>{{item.lote}}</td>
+            <td>{{item.date | date:'dd-MM-yyyy'}}</td>
+            <td>{{item.quantity | number:'1.0':'en-US'}}</td>
+            <td>
+              <a class="btn btn-info btn-icon-split btn-sm" (click)="initAddEditProduct(item.productDetailsId)">
+                <span class="icon text-white-50">
+                  <i class="fas fa-edit"></i>
+                </span>
+                <span class="text">Cập nhật chi tiết</span>
+              </a>
+            </td>
+            <td>
+              <a class="btn btn-danger btn-icon-split btn-sm"
+                (click)="deleteProductDetails(item.productDetailsId , errorTemplate)">
+                <span class="icon text-white-50">
+                  <i class="fas fa-trash-alt"></i>
+                </span>
+                <span class="text">Xóa</span>
+              </a> &nbsp;
+              <ng-template #errorTemplate>
+                <div class="modal-body alert-danger text-center">
+                  Sản phẩm đã được sử dụng nên không thể xóa
+                </div>
+              </ng-template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card-body" *ngIf="isAddEditForm">
+    <form class="user" #addEditForm="ngForm"
+      (ngSubmit)="buy.value < sell.value && date.value > getDate && addEditForm.form.valid && AddEditProduct(product.productId, productDetails.productDetailsId , submitTemplate)"
+      novalidate>
+      <hr>
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="text-center">
+            <h1 class="h4 text-gray-900 mb-4">Thông tin sản phẩm</h1>
+            <input type="hidden" [(ngModel)]="product.productId" name="productId">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control form-control-user" placeholder="Tên sản phẩm"
+              [(ngModel)]="product.name" #name="ngModel" name="name" minlength="3" maxlength="50" required>
+            <div class="alert alert-danger" *ngIf="name.invalid && addEditForm.submitted">
+              Tên không hợp lệ
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="text" placeholder="Xuất xứ" class="form-control form-control-user"
+              [(ngModel)]="product.country" #country="ngModel" name="country" maxlength="30" required>
+            <div class="alert alert-danger" *ngIf="country.invalid && addEditForm.submitted">
+              Xuất xứ không hợp lệ
+            </div>
+          </div>
+          <div class="form-group">
+            <quill-editor placeholder="Mô tả" [(ngModel)]="product.details" #details="ngModel" name="details" required>
+            </quill-editor>
+            <div class="alert alert-danger" *ngIf="details.invalid && addEditForm.submitted">
+              Chi tiết không hợp lệ
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-3 mb-1 mb-sm-0">
+              <input type="text" class="form-control form-control-user" placeholder="Giá mua" [(ngModel)]="product.buy"
+                #buy="ngModel" name="buy" pattern="\d*" maxlength="8" required>
+            </div>
+            <div class="col-sm-3 align-self-center">{{product.buy | currency:'VND'}}
+            </div>
+            <div class="col-sm-3">
+              <input type="text" class="form-control form-control-user" placeholder="Giá bán" [(ngModel)]="product.sell"
+                #sell="ngModel" name="sell" pattern="\d*" maxlength="8" required>
+            </div>
+            <div class="col-sm-3 align-self-center">{{product.sell | currency:'VND'}}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="alert alert-danger" *ngIf="buy.invalid && addEditForm.submitted">
+              Giá mua không hợp lệ
+            </div>
+            <div class="alert alert-danger" *ngIf="sell.invalid && addEditForm.submitted">
+              Giá bán không hợp lệ
+            </div>
+            <div class="alert alert-danger" *ngIf="buy.value > sell.value && addEditForm.submitted">
+              Giá mua không lớn hơn giá bán
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+              <div class="input-group-prepend">
+                <!--LIST ANH SAN PHAM-->
+                <button type="button" class="btn btn-info" (click)="openModalChooseImages(template)">Chọn ảnh</button>
+                <br>
+                <ng-template #template>
+                  <div class="modal-header">
+                    <h4 class="modal-title pull-left">Thư viện ảnh</h4>
+                    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body" style="display: flex; flex-wrap: wrap;">
+                    <div class="col-4" *ngFor="let item of listImages">
+                      <div class="card" style="margin-bottom: 10px;">
+                        <a class="card-text text-decoration-none" (click)="chooseFile(item.url)">
+                          <div class="card-image">
+                            <img class="card-img-top" src="{{item.url}}" alt="{{item.name}}">
+                            <div class="image-overlay"></div>
+                          </div>
+                          <div class="card-body text-truncate">
+                            {{item.name}}
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </ng-template>
+                <!--END-->
+              </div>
+              <br>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" (change)="selectFile($event)" id="inputGroupFile01"
+                  multiple>
+                <label class="custom-file-label" for="inputGroupFile01">Tải ảnh</label>
+              </div>
+              <div class="mb-2" *ngIf="process > 0">
+                <progressbar [max]="100" [value]="process">
+                  <span class="text-nowrap">{{process}} / 100</span>
+                </progressbar>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <ng-container *ngIf="product.images != null; else elseTemplate">
+                <img src="{{product.images}}" alt="#" class="img-thumbnail">
+              </ng-container>
+              <ng-template #elseTemplate>
+                <img src="{{baseUrl}}/assets/img/no-image-available.png" alt="#" class="img-thumbnail">
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="text-center">
+            <h1 class="h4 text-gray-900 mb-4">Chi tiết sản phẩm</h1>
+            <input type="hidden" [(ngModel)]="productDetails.productDetailsId" name="productDetailsId">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control form-control-user" placeholder="Lô sản phẩm"
+              [(ngModel)]="productDetails.lote" #lote="ngModel" name="lote" maxlength="20" minlength="3" maxlength="30"
+              required>
+            <div class="alert alert-danger" *ngIf="lote.invalid && addEditForm.submitted">
+              Lô không hợp lệ
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="date" class="form-control form-control-user" [(ngModel)]="productDetails.date" #date="ngModel"
+              name="date" required>
+            <div class="alert alert-danger" *ngIf="date.invalid && addEditForm.submitted">
+              Hạn dùng không hợp lệ
+            </div>
+            <div class="alert alert-danger" *ngIf="date.value < getDate && addEditForm.submitted">
+              Hạn dùng không ít hơn ngày hiện tại
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control form-control-user" placeholder="Số lượng"
+              [(ngModel)]="productDetails.quantity" #quantity="ngModel" name="quantity" pattern="\d*" maxlength="8"
+              required>
+            <div class="alert alert-danger" *ngIf="quantity.invalid && addEditForm.submitted">
+              SỐ lượng không hợp lệ
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="chooseCategories">Danh mục</label>
+              </div>
+              <select class="custom-select" id="chooseCategories" [(ngModel)]="isSelected" name="isSelected">
+                <option [selected]="isSelected == item.categoriesId" [ngValue]="item.categoriesId"
+                  *ngFor="let item of listCategories">
+                  {{item.name}}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <a [ngClass]="isAddEditProductDetails ? 'btn btn-primary btn-user btn-block' : 'btn btn-secondary btn-user btn-block'"
+              (click)="product.productId > 0 && AddEditProductDetails(product.productId, submitTemplate)">Thêm
+              sản phẩm chi tiết</a>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col">
+          <button type="submit" class="btn btn-primary btn-user btn-block" [disabled]="!isAddEditProduct">Cập
+            nhật sản phẩm</button>
+          <ng-template #submitTemplate>
+            <div class="modal-body alert-success text-center">
+              Cập nhật sản phẩm thành công
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Trang chính</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Hệ số mũi tiêm</li>
+  </ol>
+</nav>
+<div class="title">
+  <h1 class="tieude">
+    Hệ số mũi tiêm
+  </h1>
+</div>
+<!-- Bar Chart -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary d-inline-block">
+      <select class="custom-select" id="isSelected" [(ngModel)]="isSelected" (change)="LoadData(isSelected)"
+        name="isSelected">
+        <option [ngValue]="item" *ngFor="let item of listYear">
+          Năm thống kê: {{item}}
+        </option>
+      </select>
+    </h6>
+  </div>
+  <div class="card-body">
+    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+      [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
+    </canvas>
+    <hr>
+    Thống kê hệ số mũi tiêm <code>theo tháng</code>
+  </div>
+</div>

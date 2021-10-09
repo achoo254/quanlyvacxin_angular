@@ -1,0 +1,109 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Trang chính</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Nhân viên</li>
+  </ol>
+</nav>
+<div class="title">
+  <h1 class="tieude">
+    Nhân viên
+  </h1>
+</div>
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <div class="row">
+      <div class="col-6">
+        <!-- EMPTY -->
+        <!--END-->
+      </div>
+      <div class="col-6 text-right">
+        <!-- Default checked -->
+        <!--END-->
+      </div>
+    </div>
+    <!--<h6 class="m-0 font-weight-bold text-primary">Danh sách khách hàng đã đăng ký thông tin</h6>-->
+  </div>
+  <div class="card-body table-hover">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTablePhong" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Họ tên</th>
+            <th>Tuổi</th>
+            <th>Số điện thoại</th>
+            <th>Công việc</th>
+            <th>Nghiệp vụ</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <th>STT</th>
+            <th>Họ tên</th>
+            <th>Tuổi</th>
+            <th>Số điện thoại</th>
+            <th>Công việc</th>
+            <th>Nghiệp vụ</th>
+          </tr>
+        </tfoot>
+        <tbody>
+          <tr *ngFor="let item of listUserInfo ; index as i">
+            <td>{{i + 1}}</td>
+            <td>{{item.fullName}} </td>
+            <td>{{item.age}}</td>
+            <td>{{item.telephone}}</td>
+            <td>{{item.roles}}</td>
+            <td>
+              <a class="btn btn-info btn-icon-split btn-sm" (click)="initAddEditForm(item.userInfoId)">
+                <span class="icon text-white-50">
+                  <i class="fas fa-edit"></i>
+                </span>
+                <span class="text">Cập nhật chi tiết</span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card-body" *ngIf="isAddEditForm">
+    <form class="user" #addEditForm="ngForm"
+      (ngSubmit)="addEditForm.form.valid && AddEditForm(initUser.userInfoId, editTemplate)" novalidate>
+      <hr>
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="text-center">
+            <h1 class="h4 text-gray-900 mb-4">Thông tin nhân viên</h1>
+            <input type="hidden" [(ngModel)]="initUser.userInfoId" name="productId">
+          </div>
+          <div class="form-group">
+            <label for="fullname">Họ tên</label>
+            <input type="text" class="form-control form-control-user" placeholder="Họ tên"
+              [(ngModel)]="initUser.fullName" name="fullname" readonly>
+          </div>
+          <div class="form-group">
+            <label for="isSelected">Công việc</label>
+            <select class="custom-select" id="isSelected" [(ngModel)]="isSelected" name="isSelected">
+              <option [ngValue]="item.toString()" *ngFor="let item of listRoles">
+                {{item.toString()}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col">
+          <button type="submit" class="btn btn-primary btn-user btn-block">Cập nhật</button>
+          <ng-template #editTemplate>
+            <div class="modal-body alert-success text-center">
+              Cập nhật thành công
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

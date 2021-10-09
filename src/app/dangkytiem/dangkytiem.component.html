@@ -1,0 +1,98 @@
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <!-- BACK -->
+    <a (click)="GoBack()" class="btn btn-info btn-icon-split">
+      <span class="icon text-white-50">
+        <i class="fas fa-info-circle"></i>
+      </span>
+      <span class="text">Quay lại</span>
+    </a>
+    <!--END-->
+  </div>
+  <form class="user">
+    <div class="card-body table-hover">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="datatableDangKyTiem" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Danh mục</th>
+              <th>Tên vắc xin</th>
+              <th>Lô</th>
+              <th>Hạn dùng</th>
+              <th>Nghiệp vụ</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th colspan="4">
+                Phác đồ điều trị
+                <select class="custom-select" id="isSelected" [(ngModel)]="isSelected" name="isSelected">
+                  <option [ngValue]="itemRegimen.regimenId" *ngFor="let itemRegimen of listRegimen">
+                    {{itemRegimen.name}}
+                  </option>
+                </select>
+              </th>
+              <th class="align-middle">
+                <a class="btn btn-primary chuyentiep" (click)="Open_NextRoom()">Chuyển
+                  tiếp</a>
+              </th>
+            </tr>
+          </tfoot>
+          <tbody>
+            <tr *ngFor="let item of listShowData; index as i">
+              <td>{{item.productDetailsCategories.name}}</td>
+              <td>{{item.productDetailsProduct.name}}</td>
+              <td>{{item.lote}}</td>
+              <td>{{item.date | date:'dd-MM-yyyy'}}</td>
+              <td>
+                <button class="btn btn-primary" (click)="AddRegimenDetails(item.productDetailsId)"><i
+                    class="fas fa-plus"></i></button> &nbsp;&nbsp;
+                <a class="btn btn-info btn-icon-split btn-sm">
+                  <span class="icon text-white-50">
+                    <i class="fas fa-syringe"></i>
+                  </span>
+                  <span class="text quantity">{{item.quantity}}</span>
+                </a> &nbsp;&nbsp; <button class="btn btn-danger"
+                  (click)="RemoveRegimenDetails(item.productDetailsId)"><i class="fas fa-minus"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </form>
+  <!-- Modal MOVE PHONG KHAM -->
+  <form #nextRoom="ngForm" (ngSubmit)="Next_Finish()" novalidate>
+    <div class="modal fade chuyenphong-modal" tabindex="-1" role="dialog" aria-labelledby="chuyenphongLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="chuyenphongLabel">Thông tin</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="card mb-4 py-3 border-bottom-primary" *ngFor="let room of listNextRoom; index as i">
+              <div class="card-body">
+                <div class="form-check-inline">
+                  <label class="form-check-label">
+                    <input type="radio" class="form-check-input" [(ngModel)]="nextRoomSeleted" name="chonphong"
+                      [value]="room.roomId">{{room.name}}
+                    {{room.code}}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary closeChuyenPhong" data-dismiss="modal">Đóng</button>
+            <button type="submit" class="btn btn-primary">In
+              phiếu</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

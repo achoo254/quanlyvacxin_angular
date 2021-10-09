@@ -1,0 +1,103 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Trang chính</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Liên hệ</li>
+  </ol>
+</nav>
+<div class="title">
+  <h1 class="tieude">
+    Liên hệ
+  </h1>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="gt-info" style="text-align: center;">
+      <img class="card-img-top" src="{{baseUrl}}/assets/img/lien-he.png" alt="liên hệ">
+    </div>
+  </div>
+</div>
+<form class="user" #myForm="ngForm" novalidate (ngSubmit)="myForm.form.valid && sendMail()">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="gt-info">
+        <div class="row">
+          <div class="col-md-12">
+            <hr style="display: block; margin: 0 0  10px; border-style: dashed;">
+            <p>Hoặc sử dụng mẫu sau để gửi thư về cho chúng tôi</p>
+            <label for="chondanhxung">DANH XƯNG</label>
+            <div class="d-flex justify-content-around">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" #name="ngModel" name="name" value="Ông"
+                  [(ngModel)]="contact.name" required>
+                <label class="form-check-label" for="ong">Ông</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" #name="ngModel" name="name" value="Bà"
+                  [(ngModel)]="contact.name" required>
+                <label class="form-check-label" for="ba">Bà</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" #name="ngModel" name="name" value="Anh"
+                  [(ngModel)]="contact.name" required>
+                <label class="form-check-label" for="anh">Anh</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" #name="ngModel" name="name" value="Chị"
+                  [(ngModel)]="contact.name" required>
+                <label class="form-check-label" for="chi">Chị</label>
+              </div>
+            </div>
+            <div class="alert alert-danger" *ngIf="name.invalid && myForm.submitted">
+              Vui lòng không để trống
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="fullName">HỌ VÀ TÊN*</label>
+              <input type="text" class="form-control" #fullName="ngModel" name="fullName" [(ngModel)]="contact.fullName"
+                required minlength="5">
+              <div class="alert alert-danger" *ngIf="fullName.invalid && myForm.submitted">
+                Vui lòng không để trống và nhập hơn 5 ký tự
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="email">ĐỊA CHỈ EMAIL*</label>
+              <input type="email" class="form-control" #email="ngModel" name="email" [(ngModel)]="contact.email" email
+                required>
+              <div class="alert alert-danger" *ngIf="email.invalid && myForm.submitted">
+                Vui lòng không để trống hoặc không hợp lệ
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="telephone">ĐIỆN THOẠI*</label>
+              <input type="number" class="form-control" #telephone="ngModel" name="telephone"
+                [(ngModel)]="contact.telephone" required minlength="5">
+              <div class="alert alert-danger" *ngIf="telephone.invalid && myForm.submitted">
+                Vui lòng không để trống và nhập hơn 5 ký tự
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="content">NỘI DUNG</label>
+              <textarea class="form-control" rows="7" #details="ngModel" name="details" [(ngModel)]="contact.details"
+                required minlength="5"></textarea>
+              <div class="alert alert-danger" *ngIf="details.invalid && myForm.submitted">
+                Vui lòng không để trống và hơn 5 ký tự
+              </div>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary mb-2" [disabled]="isValid">{{btnStatus}}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
